@@ -1,2 +1,2 @@
-# current-class-code
-Codes of current class are pushed here
+# current-lecture-code
+Codes of current lecture are pushed here
