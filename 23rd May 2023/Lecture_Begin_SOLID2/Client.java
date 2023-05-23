@@ -2,7 +2,7 @@ package FairWork.Lecture_Begin_SOLID2;
 
 public class Client {
     public static void main(String[] args) {
-        Sparrow s = new Sparrow();
+        Sparrow s = new Sparrow(new SlowFlyator());
         s.fly();
 
         s.setFlyator(new SlowFlyator());
