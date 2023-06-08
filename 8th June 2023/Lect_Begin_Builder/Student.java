@@ -11,6 +11,13 @@ public class Student {
         return age;
     }
 
+    public void setAge(int age){
+        if(Builder.isAgeValid(age) == false){
+            throw new IllegalArgumentException("age should be between 0 and 120");
+        }
+        this.age = age;
+    }
+
     public int getPsp() {
         return psp;
     }
@@ -72,17 +79,42 @@ public class Student {
         }
 
         public Student build(){
-            if(this.age < 0 || this.age > 120){
+            if(isAgeValid(age) == false){
                 throw new IllegalArgumentException("age should be between 0 and 120");
             }
-
-            if(this.psp < 0 || this.psp > 100){
+            if(isPSPValid(psp) == false){
                 throw new IllegalArgumentException("psp should be between 0 and 100");
             }
+            if(isNameValid(name) == false){
+                throw new IllegalArgumentException("name should not be null or empty");
+            }
 
-            // 3 more validations
+            // 2 more validations
             return new Student(this);
         }
+
+        private static boolean isAgeValid(int age){
+            if(age < 0 || age > 120){
+                return false;
+            }
+            return true;
+        }
+
+        private static boolean isPSPValid(int psp){
+            if(psp < 0 || psp > 100){
+                return false;
+            }
+            return true;
+        }
+
+        private static boolean isNameValid(String name){
+            if(name == null || name.length() == 0){
+                return false;
+            }
+            return true;
+        }
+
+
     }
 
 }
