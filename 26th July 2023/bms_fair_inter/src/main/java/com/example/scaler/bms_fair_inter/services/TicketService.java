@@ -11,10 +11,13 @@ import com.example.scaler.bms_fair_inter.repositiories.TicketRepository;
 import com.example.scaler.bms_fair_inter.repositiories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -29,6 +32,7 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Ticket bookTicket(List<Long> showSeatIds, Long userId) throws ShowSeatNotAvailableException, UserNotFoundException{
         // 1. Get showSeats for selected Ids
         // 2. Check if they are available => available or locked 10 minutes ago
@@ -38,15 +42,15 @@ public class TicketService {
         // 5. Prepare dummy ticket
         // 6. Return ticket
 
-        List<SeatInShow> selectedSeats = showSeatRepository.findByIds(showSeatIds);
+        List<SeatInShow> selectedSeats = showSeatRepository.findAllById(showSeatIds);
         for(SeatInShow seat: selectedSeats){
             if(IsSeatAvailable(seat) == false){
                 throw new ShowSeatNotAvailableException();
             }
         }
 
-        User bookedBy = userRepository.findById(userId);
-        if(bookedBy == null){
+        Optional<User> bookedBy = userRepository.findById(userId);
+        if(bookedBy.isEmpty()){
             throw new UserNotFoundException();
         }
 
@@ -59,7 +63,7 @@ public class TicketService {
         }
 
         Ticket ticket = new Ticket();
-        ticket.setBookedBy(bookedBy);
+        ticket.setBookedBy(bookedBy.get());
         ticket.setBookingTime(new Date());
         ticket.setSeats(selectedUpdatedSeats);
         ticket = ticketRepository.save(ticket);
