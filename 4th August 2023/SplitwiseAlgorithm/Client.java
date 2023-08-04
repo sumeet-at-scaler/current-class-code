@@ -1,5 +1,6 @@
 package FairWork.SplitwiseAlgorithm;
 
+import FairWork.SplitwiseAlgorithm.algorithms.GreedyAlgorithm;
 import FairWork.SplitwiseAlgorithm.algorithms.RoundTrip;
 import FairWork.SplitwiseAlgorithm.algorithms.SettlementStrategy;
 import FairWork.SplitwiseAlgorithm.models.ExpensePaidBy;
@@ -28,7 +29,7 @@ public class Client {
         sharedByList.add(new ExpenseSharedBy("D", 3000));
 
         // get data => prepare lists of paidby and shared by
-        List<Transaction> transactions = settleExpenses(paidByList, sharedByList, new RoundTrip());
+        List<Transaction> transactions = settleExpenses(paidByList, sharedByList, new GreedyAlgorithm());
         System.out.println(transactions);
     }
 
