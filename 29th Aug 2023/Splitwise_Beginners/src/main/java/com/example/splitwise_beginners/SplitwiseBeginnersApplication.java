@@ -19,6 +19,7 @@ public class SplitwiseBeginnersApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(SplitwiseBeginnersApplication.class, args);
+
     }
 
     // create-user <name> <uname> <pwd>
